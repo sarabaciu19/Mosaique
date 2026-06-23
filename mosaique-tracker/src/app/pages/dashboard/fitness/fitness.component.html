@@ -1,0 +1,333 @@
+<div class="fitness-container">
+  <!-- Header Secțiune -->
+  <div class="page-header">
+    <div class="header-left-info">
+      <div class="breadcrumb-custom">Dashboard / Fitness</div>
+      <h1 class="page-title">Fitness & Sănătate Tracker</h1>
+      <p class="page-subtitle">Urmărește-ți antrenamentele, progresul fizic și caloriile arse în timp real.</p>
+    </div>
+    <div class="header-actions">
+      <button nz-button nzType="primary" class="btn-primary-custom" (click)="openAddModal()">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Adaugă Antrenament
+      </button>
+    </div>
+  </div>
+
+  <!-- Panel Statistici -->
+  <div class="stats-grid">
+    <!-- Total Antrenamente -->
+    <div class="stat-card card-workouts">
+      <div class="stat-card-inner">
+        <div class="stat-content">
+          <span class="stat-label">Antrenamente</span>
+          <span class="stat-value">{{ dataService.totalWorkouts() }}</span>
+        </div>
+        <div class="stat-icon-wrapper">
+          <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6.5 6.5H17.5" stroke-linecap="round"></path>
+            <path d="M18 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H18" stroke-linecap="round"></path>
+            <path d="M6 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H6" stroke-linecap="round"></path>
+            <path d="M6.5 17.5H17.5" stroke-linecap="round"></path>
+            <rect x="9" y="3" width="6" height="18" rx="1"></rect>
+          </svg>
+        </div>
+      </div>
+      <div class="card-indicator"></div>
+    </div>
+
+    <!-- Calorii Arse -->
+    <div class="stat-card card-calories">
+      <div class="stat-card-inner">
+        <div class="stat-content">
+          <span class="stat-label">Calorii Arse</span>
+          <span class="stat-value">{{ dataService.totalCalories() }} <span class="unit-text">kcal</span></span>
+        </div>
+        <div class="stat-icon-wrapper">
+          <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path>
+          </svg>
+        </div>
+      </div>
+      <div class="card-indicator"></div>
+    </div>
+
+    <!-- Durată Activitate -->
+    <div class="stat-card card-duration">
+      <div class="stat-card-inner">
+        <div class="stat-content">
+          <span class="stat-label">Timp Activ</span>
+          <span class="stat-value">{{ totalDuration() }} <span class="unit-text">min</span></span>
+        </div>
+        <div class="stat-icon-wrapper">
+          <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+        </div>
+      </div>
+      <div class="card-indicator"></div>
+    </div>
+
+    <!-- Grup Muscular Favorit -->
+    <div class="stat-card card-muscle">
+      <div class="stat-card-inner">
+        <div class="stat-content">
+          <span class="stat-label">Focus Principal</span>
+          <span class="stat-value">{{ favoriteMuscleGroup() }}</span>
+        </div>
+        <div class="stat-icon-wrapper">
+          <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            <path d="M2 12h20"></path>
+          </svg>
+        </div>
+      </div>
+      <div class="card-indicator"></div>
+    </div>
+  </div>
+
+  <!-- Zona de Căutare și Filtrare -->
+  <div class="filter-card">
+    <div class="search-box">
+      <span class="search-icon-wrapper">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </span>
+      <input
+        type="text"
+        placeholder="Caută antrenament..."
+        class="search-input"
+        [(ngModel)]="searchTermModel"
+        (ngModelChange)="onSearchChange($event)"
+      />
+    </div>
+
+    <div class="filter-actions">
+      <span class="filter-label">Grup Muscular:</span>
+      <nz-select
+        [ngModel]="selectedMuscleGroup()"
+        (ngModelChange)="onMuscleGroupFilterChange($event)"
+        class="muscle-select"
+        nzPlaceHolder="Toate grupele"
+        nzAllowClear
+      >
+        <nz-option nzValue="" nzLabel="Toate"></nz-option>
+        <nz-option nzValue="Legs" nzLabel="Legs (Picioare)"></nz-option>
+        <nz-option nzValue="Chest" nzLabel="Chest (Piept)"></nz-option>
+        <nz-option nzValue="Back" nzLabel="Back (Spate)"></nz-option>
+        <nz-option nzValue="Arms" nzLabel="Arms (Brațe)"></nz-option>
+        <nz-option nzValue="Core" nzLabel="Core (Abdomen)"></nz-option>
+        <nz-option nzValue="Cardio" nzLabel="Cardio (Rezistență)"></nz-option>
+        <nz-option nzValue="Full Body" nzLabel="Full Body"></nz-option>
+      </nz-select>
+    </div>
+  </div>
+
+  <!-- Tabelul cu antrenamente -->
+  <div class="table-card">
+    <nz-table
+      #basicTable
+      [nzData]="filteredList()"
+      [nzLoading]="false"
+      [nzFrontPagination]="true"
+      [nzPageSize]="5"
+      class="custom-table"
+    >
+      <thead>
+        <tr>
+          <th>Denumire Exercițiu</th>
+          <th>Grup Muscular</th>
+          <th>Durată</th>
+          <th>Energie Consumată</th>
+          <th>Dată Antrenament</th>
+          <th class="text-right">Acțiuni</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of basicTable.data" class="table-row-hover">
+          <!-- Denumire -->
+          <td>
+            <div class="exercise-cell">
+              <span class="exercise-name">{{ item.name }}</span>
+            </div>
+          </td>
+
+          <!-- Grup Muscular -->
+          <td>
+            <span class="muscle-tag" [ngClass]="item.muscleGroup.toLowerCase().replace(' ', '-')">
+              {{ item.muscleGroup }}
+            </span>
+          </td>
+
+          <!-- Durată -->
+          <td>
+            <div class="metric-cell">
+              <svg class="metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span class="metric-value">{{ item.duration }} <span class="metric-unit">min</span></span>
+            </div>
+          </td>
+
+          <!-- Calorii -->
+          <td>
+            <div class="metric-cell">
+              <svg class="metric-icon fire-color" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path>
+              </svg>
+              <span class="metric-value">{{ item.calories }} <span class="metric-unit">kcal</span></span>
+            </div>
+          </td>
+
+          <!-- Dată -->
+          <td>
+            <div class="date-cell">
+              <svg class="date-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <span>{{ item.date }}</span>
+            </div>
+          </td>
+
+          <!-- Acțiuni -->
+          <td class="text-right actions-cell">
+            <button 
+              nz-button 
+              nzType="text" 
+              class="btn-action edit-btn" 
+              (click)="openEditModal(item)"
+              nz-tooltip
+              nzTooltipTitle="Editează antrenamentul"
+            >
+              <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5Z"></path>
+              </svg>
+            </button>
+            <button 
+              nz-button 
+              nzType="text" 
+              class="btn-action delete-btn"
+              nz-popconfirm
+              nzPopconfirmTitle="Sigur dorești să ștergi acest antrenament?"
+              nzPopconfirmPlacement="left"
+              (nzOnConfirm)="deleteItem(item.id)"
+              nz-tooltip
+              nzTooltipTitle="Șterge antrenamentul"
+            >
+              <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                <line x1="10" y1="11" x2="10" y2="17"></line>
+                <line x1="14" y1="11" x2="14" y2="17"></line>
+              </svg>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+
+  <!-- Modal Adăugare / Editare Antrenament -->
+  <nz-modal
+    [(nzVisible)]="isModalVisible"
+    [nzTitle]="modalTitleTemplate"
+    [nzContent]="modalContentTemplate"
+    [nzFooter]="modalFooterTemplate"
+    (nzOnCancel)="handleCancel()"
+    [nzWidth]="520"
+    class="custom-modal"
+  >
+    <!-- Template pentru titlu personalizat -->
+    <ng-template #modalTitleTemplate>
+      <div class="modal-header-custom">
+        <svg class="modal-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M12 8v8M8 12h8"></path>
+        </svg>
+        <span>{{ isEditing ? 'Editează Antrenamentul' : 'Adaugă Antrenament Nou' }}</span>
+      </div>
+    </ng-template>
+
+    <!-- Template pentru conținut -->
+    <ng-template #modalContentTemplate>
+      <form nz-form [formGroup]="itemForm" nzLayout="vertical" class="modal-form-custom">
+        
+        <!-- Denumire Exercițiu -->
+        <nz-form-item>
+          <nz-form-label nzRequired nzFor="name">Denumire Exercițiu / Activitate</nz-form-label>
+          <nz-form-control nzErrorTip="Vă rugăm să introduceți denumirea exercițiului (minim 2 caractere)">
+            <input nz-input formControlName="name" id="name" placeholder="Ex: Alergare Bandă, Genuflexiuni, Yoga" class="form-input-custom" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <div class="form-row-two-columns">
+          <!-- Grup Muscular -->
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="muscleGroup">Grup Muscular Vizat</nz-form-label>
+            <nz-form-control>
+              <nz-select formControlName="muscleGroup" id="muscleGroup" class="form-select-custom">
+                <nz-option nzValue="Legs" nzLabel="Legs (Picioare)"></nz-option>
+                <nz-option nzValue="Chest" nzLabel="Chest (Piept)"></nz-option>
+                <nz-option nzValue="Back" nzLabel="Back (Spate)"></nz-option>
+                <nz-option nzValue="Arms" nzLabel="Arms (Brațe)"></nz-option>
+                <nz-option nzValue="Core" nzLabel="Core (Abdomen)"></nz-option>
+                <nz-option nzValue="Cardio" nzLabel="Cardio (Rezistență)"></nz-option>
+                <nz-option nzValue="Full Body" nzLabel="Full Body (Corp complet)"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <!-- Data -->
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="date">Data Antrenamentului</nz-form-label>
+            <nz-form-control nzErrorTip="Vă rugăm să selectați data">
+              <nz-date-picker formControlName="date" id="date" class="form-datepicker-custom" nzFormat="yyyy-MM-dd"></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div class="form-row-two-columns">
+          <!-- Durată -->
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="duration">Durată (minute)</nz-form-label>
+            <nz-form-control nzErrorTip="Durata trebuie să fie minim 1 minut">
+              <input nz-input type="number" formControlName="duration" id="duration" placeholder="Ex: 45, 60" class="form-input-custom" />
+            </nz-form-control>
+          </nz-form-item>
+
+          <!-- Calorii -->
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="calories">Calorii Arse (kcal)</nz-form-label>
+            <nz-form-control nzErrorTip="Valoarea trebuie să fie minim 1">
+              <input nz-input type="number" formControlName="calories" id="calories" placeholder="Ex: 300, 450" class="form-input-custom" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+      </form>
+    </ng-template>
+
+    <!-- Template pentru subsol (butoane) -->
+    <ng-template #modalFooterTemplate>
+      <div class="modal-footer-custom">
+        <button nz-button nzType="default" class="btn-secondary-custom" (click)="handleCancel()">
+          Renunță
+        </button>
+        <button nz-button nzType="primary" class="btn-primary-custom" (click)="handleSave()">
+          {{ isEditing ? 'Salvează Modificările' : 'Adaugă Antrenament' }}
+        </button>
+      </div>
+    </ng-template>
+  </nz-modal>
+</div>

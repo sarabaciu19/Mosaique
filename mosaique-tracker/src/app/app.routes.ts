@@ -5,7 +5,6 @@ import { noAuthGuard } from './core/guards/no-auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: '**', redirectTo: 'login' }, // Wildcard route for a 404 page
   {
     path: 'login',
     loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent),
@@ -15,5 +14,22 @@ export const routes: Routes = [
     path: 'register',
     loadComponent: () => import('./pages/register/register.component').then(m => m.RegisterComponent),
     canActivate: [noAuthGuard]
-  }
+  },
+  {
+    path: 'dashboard',
+    loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent),
+    canActivate: [authGuard],
+    children: [
+      {
+        path: 'entertainment',
+        loadComponent: () => import('./pages/dashboard/entertainment/entertainment.component').then(m => m.EntertainmentComponent)
+      },
+      {
+        path: 'fitness',
+        loadComponent: () => import('./pages/dashboard/fitness/fitness.component').then(m => m.FitnessComponent)
+      },
+      { path: '', redirectTo: 'entertainment', pathMatch: 'full' }
+    ]
+  },
+  { path: '**', redirectTo: 'login' } // Wildcard route for a 404 page
 ];

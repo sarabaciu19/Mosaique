@@ -1,0 +1,243 @@
+.app-layout {
+  min-height: 100vh;
+}
+
+.sidebar {
+  background: var(--space-cadet);
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.05);
+  z-index: 10;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Logo in sidebar */
+.sidebar .sidebar-logo {
+  height: 64px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: #1c283d; /* Versiune ușor mai închisă de Space Cadet pentru branding */
+}
+
+.sidebar .sidebar-logo .logo-icon {
+  width: 28px;
+  height: 28px;
+  color: var(--tan);
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.sidebar .sidebar-logo span {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  font-family: 'Playfair Display', serif !important;
+  letter-spacing: 0.5px;
+}
+
+/* Modificări Sidebar Menu */
+.sidebar .sidebar-menu {
+  border-right: none;
+  background: transparent;
+  padding-top: 16px;
+}
+
+.sidebar .sidebar-menu .menu-item {
+  height: 50px;
+  line-height: 50px;
+  margin: 8px 12px !important;
+  width: calc(100% - 24px) !important;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  padding-left: 16px !important;
+  transition: all 0.2s ease-in-out;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.sidebar .sidebar-menu .menu-item .menu-icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.sidebar .sidebar-menu .menu-item .menu-icon {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2;
+  transition: transform 0.2s ease;
+}
+
+.sidebar .sidebar-menu .menu-item .menu-text {
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+.sidebar .sidebar-menu .menu-item:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar .sidebar-menu .menu-item:hover .menu-icon {
+  transform: scale(1.1);
+}
+
+/* Element selectat în Sidebar (Activ) */
+.sidebar .sidebar-menu .menu-item.nz-menu-item-selected {
+  background: var(--tan) !important;
+  color: var(--space-cadet) !important;
+  box-shadow: 0 4px 12px rgba(213, 184, 147, 0.3);
+}
+
+.sidebar .sidebar-menu .menu-item.nz-menu-item-selected .menu-icon-wrapper {
+  color: var(--space-cadet);
+}
+
+.sidebar .sidebar-menu .menu-item.nz-menu-item-selected .menu-text {
+  font-weight: 600;
+}
+
+.main-layout {
+  background: var(--bg-workspace);
+}
+
+/* Header-ul paginii */
+.app-header {
+  background: #ffffff;
+  padding: 0 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  z-index: 9;
+}
+
+.app-header .header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.app-header .header-left .collapse-trigger {
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  transition: background 0.2s;
+  color: var(--slate-gray);
+}
+
+.app-header .header-left .collapse-trigger:hover {
+  background: rgba(0, 0, 0, 0.03);
+  color: var(--space-cadet);
+}
+
+.app-header .header-left .collapse-trigger .trigger-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.app-header .header-left .header-title {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--space-cadet);
+}
+
+@media (max-width: 576px) {
+  .app-header .header-left .header-title {
+    display: none; /* Ascundem pe ecrane foarte mici */
+  }
+}
+
+.app-header .header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.app-header .header-right .user-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-header .header-right .user-profile .user-avatar {
+  background-color: var(--slate-gray);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.app-header .header-right .user-profile .user-name {
+  font-weight: 500;
+  color: var(--space-cadet);
+  font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+  .app-header .header-right .user-profile .user-name {
+    display: none;
+  }
+}
+
+.app-header .header-right .logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--slate-gray);
+  padding: 4px 10px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.app-header .header-right .logout-btn .logout-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.app-header .header-right .logout-btn:hover {
+  background: #fff0f0;
+  color: #d32f2f;
+}
+
+/* Zona de conținut */
+.app-content {
+  padding: 24px;
+  overflow-y: auto;
+  height: calc(100vh - 64px);
+  position: relative;
+}
+
+.page-container {
+  min-height: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Animație la încărcarea paginilor */
+.animate-fade {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

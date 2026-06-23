@@ -1,0 +1,353 @@
+<div class="entertainment-container">
+  <!-- Header Secțiune -->
+  <div class="page-header">
+    <div class="header-left-info">
+      <div class="breadcrumb-custom">Dashboard / Divertisment</div>
+      <h1 class="page-title">Divertisment & Media Tracker</h1>
+      <p class="page-subtitle">Urmărește filmele, serialele și cărțile tale preferate într-un singur loc reactiv.</p>
+    </div>
+    <div class="header-actions">
+      <button nz-button nzType="primary" class="btn-primary-custom" (click)="openAddModal()">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Adaugă Element
+      </button>
+    </div>
+  </div>
+
+  <!-- Panel Statistici -->
+  <div class="stats-grid">
+    <!-- Total Media -->
+    <div class="stat-card card-total">
+      <div class="stat-card-inner">
+        <div class="stat-content">
+          <span class="stat-label">Total Urmărite</span>
+          <span class="stat-value">{{ totalCount() }}</span>
+        </div>
+        <div class="stat-icon-wrapper">
+          <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
+            <line x1="7" y1="2" x2="7" y2="22"></line>
+            <line x1="17" y1="2" x2="17" y2="22"></line>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+          </svg>
+        </div>
+      </div>
+      <div class="card-indicator"></div>
+    </div>
+
+    <!-- În Curs -->
+    <div class="stat-card card-progress">
+      <div class="stat-card-inner">
+        <div class="stat-content">
+          <span class="stat-label">În Curs de Vizionare/Lectură</span>
+          <span class="stat-value">{{ inProgressCount() }}</span>
+        </div>
+        <div class="stat-icon-wrapper">
+          <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+        </div>
+      </div>
+      <div class="card-indicator"></div>
+    </div>
+
+    <!-- Finalizate -->
+    <div class="stat-card card-completed">
+      <div class="stat-card-inner">
+        <div class="stat-content">
+          <span class="stat-label">Finalizate</span>
+          <span class="stat-value">{{ completedCount() }}</span>
+        </div>
+        <div class="stat-icon-wrapper">
+          <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+        </div>
+      </div>
+      <div class="card-indicator"></div>
+    </div>
+
+    <!-- Rating Mediu -->
+    <div class="stat-card card-rating">
+      <div class="stat-card-inner">
+        <div class="stat-content">
+          <span class="stat-label">Rating Mediu</span>
+          <span class="stat-value">{{ averageRating() }} <span class="max-rating">/ 5</span></span>
+        </div>
+        <div class="stat-icon-wrapper">
+          <svg class="stat-icon icon-star" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+        </div>
+      </div>
+      <div class="card-indicator"></div>
+    </div>
+  </div>
+
+  <!-- Zona de Căutare și Filtrare -->
+  <div class="filter-card">
+    <div class="search-box">
+      <span class="search-icon-wrapper">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </span>
+      <input
+        type="text"
+        placeholder="Caută după titlu, autor/regizor sau gen..."
+        class="search-input"
+        [(ngModel)]="searchTermModel"
+        (ngModelChange)="onSearchChange($event)"
+      />
+    </div>
+
+    <div class="filter-actions">
+      <span class="filter-label">Filtrează după Status:</span>
+      <nz-select
+        [ngModel]="selectedStatus()"
+        (ngModelChange)="onStatusFilterChange($event)"
+        class="status-select"
+        nzPlaceHolder="Toate statusurile"
+        nzAllowClear
+      >
+        <nz-option nzValue="" nzLabel="Toate"></nz-option>
+        <nz-option nzValue="În așteptare" nzLabel="În așteptare"></nz-option>
+        <nz-option nzValue="În curs" nzLabel="În curs"></nz-option>
+        <nz-option nzValue="Văzut" nzLabel="Văzut (Filme)"></nz-option>
+        <nz-option nzValue="Citit" nzLabel="Citit (Cărți)"></nz-option>
+      </nz-select>
+    </div>
+  </div>
+
+  <!-- Tabelul cu date -->
+  <div class="table-card">
+    <nz-table
+      #basicTable
+      [nzData]="filteredList()"
+      [nzLoading]="false"
+      [nzFrontPagination]="true"
+      [nzPageSize]="5"
+      class="custom-table"
+    >
+      <thead>
+        <tr>
+          <th>Titlu & Creator</th>
+          <th>Gen</th>
+          <th>Dimensiune / Durată</th>
+          <th>Apreciere (Rating)</th>
+          <th>Stadiu (Status)</th>
+          <th class="text-right">Acțiuni</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of basicTable.data" class="table-row-hover">
+          <!-- Titlu & Creator -->
+          <td>
+            <div class="title-creator-cell">
+              <span class="item-title">{{ item.title }}</span>
+              <span class="item-creator">de {{ item.author }}</span>
+            </div>
+          </td>
+
+          <!-- Gen -->
+          <td>
+            <span class="genre-tag" [ngClass]="item.genre.toLowerCase()">
+              {{ item.genre }}
+            </span>
+          </td>
+
+          <!-- Durată / Pagini -->
+          <td>
+            <div class="duration-cell">
+              <svg class="duration-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 6v6l4 2"></path>
+                <circle cx="12" cy="12" r="10"></circle>
+              </svg>
+              <span>
+                {{ item.duration }} 
+                {{ 
+                  (item.genre.toLowerCase().includes('carte') || 
+                   item.genre.toLowerCase().includes('book') || 
+                   item.genre.toLowerCase().includes('novel') || 
+                   item.genre.toLowerCase().includes('classic') || 
+                   item.genre.toLowerCase().includes('literatură')) 
+                   ? 'pagini' : 'minute' 
+                }}
+              </span>
+            </div>
+          </td>
+
+          <!-- Rating -->
+          <td>
+            <nz-rate [ngModel]="item.rating" nzDisabled class="stars-display"></nz-rate>
+          </td>
+
+          <!-- Status Toggler -->
+          <td>
+            <div 
+              class="status-pill-toggler" 
+              [ngClass]="{
+                'status-waiting': item.status === 'În așteptare',
+                'status-progress': item.status === 'În curs',
+                'status-completed': item.status === 'Văzut' || item.status === 'Citit'
+              }"
+              (click)="toggleStatus(item)"
+              nz-tooltip
+              nzTooltipTitle="Apasă pentru a schimba statusul"
+              nzTooltipPlacement="top"
+            >
+              <span class="pulse-indicator"></span>
+              <span class="status-text">{{ item.status }}</span>
+              <svg class="cycle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+              </svg>
+            </div>
+          </td>
+
+          <!-- Acțiuni -->
+          <td class="text-right actions-cell">
+            <button 
+              nz-button 
+              nzType="text" 
+              class="btn-action edit-btn" 
+              (click)="openEditModal(item)"
+              nz-tooltip
+              nzTooltipTitle="Editează elementul"
+            >
+              <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5Z"></path>
+              </svg>
+            </button>
+            <button 
+              nz-button 
+              nzType="text" 
+              class="btn-action delete-btn"
+              nz-popconfirm
+              nzPopconfirmTitle="Sigur dorești să ștergi acest element?"
+              nzPopconfirmPlacement="left"
+              (nzOnConfirm)="deleteItem(item.id)"
+              nz-tooltip
+              nzTooltipTitle="Șterge elementul"
+            >
+              <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                <line x1="10" y1="11" x2="10" y2="17"></line>
+                <line x1="14" y1="11" x2="14" y2="17"></line>
+              </svg>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+
+  <!-- Modal Adăugare / Editare Element -->
+  <nz-modal
+    [(nzVisible)]="isModalVisible"
+    [nzTitle]="modalTitleTemplate"
+    [nzContent]="modalContentTemplate"
+    [nzFooter]="modalFooterTemplate"
+    (nzOnCancel)="handleCancel()"
+    [nzWidth]="520"
+    class="custom-modal"
+  >
+    <!-- Template pentru titlu personalizat -->
+    <ng-template #modalTitleTemplate>
+      <div class="modal-header-custom">
+        <svg class="modal-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+          <polyline points="2 17 12 22 22 17"></polyline>
+          <polyline points="2 12 12 17 22 12"></polyline>
+        </svg>
+        <span>{{ isEditing ? 'Editează Element Divertisment' : 'Adaugă Element Divertisment' }}</span>
+      </div>
+    </ng-template>
+
+    <!-- Template pentru conținut -->
+    <ng-template #modalContentTemplate>
+      <form nz-form [formGroup]="itemForm" nzLayout="vertical" class="modal-form-custom">
+        
+        <!-- Titlu -->
+        <nz-form-item>
+          <nz-form-label nzRequired nzFor="title">Titlu Media</nz-form-label>
+          <nz-form-control nzErrorTip="Vă rugăm să introduceți un titlu valid (minim 2 caractere)">
+            <input nz-input formControlName="title" id="title" placeholder="Ex: Inception, Matrix, Hobbitul" class="form-input-custom" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <!-- Autor / Regizor -->
+        <nz-form-item>
+          <nz-form-label nzRequired nzFor="author">Autor / Regizor</nz-form-label>
+          <nz-form-control nzErrorTip="Vă rugăm să introduceți autorul sau regizorul (minim 2 caractere)">
+            <input nz-input formControlName="author" id="author" placeholder="Ex: Christopher Nolan, J.R.R. Tolkien" class="form-input-custom" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <div class="form-row-two-columns">
+          <!-- Gen -->
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="genre">Genul Media</nz-form-label>
+            <nz-form-control nzErrorTip="Vă rugăm să alegeți sau să scrieți un gen">
+              <input nz-input formControlName="genre" id="genre" placeholder="Ex: Sci-Fi, Carte Self-Help, Dramă, Fantasy" class="form-input-custom" />
+            </nz-form-control>
+          </nz-form-item>
+
+          <!-- Durată / Pagini -->
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="duration">Dimensiune (minute sau pagini)</nz-form-label>
+            <nz-form-control nzErrorTip="Valoarea trebuie să fie minim 1">
+              <input nz-input type="number" formControlName="duration" id="duration" placeholder="Ex: 148, 320" class="form-input-custom" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div class="form-row-two-columns">
+          <!-- Status -->
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="status">Status</nz-form-label>
+            <nz-form-control>
+              <nz-select formControlName="status" id="status" class="form-select-custom">
+                <nz-option nzValue="În așteptare" nzLabel="În așteptare"></nz-option>
+                <nz-option nzValue="În curs" nzLabel="În curs"></nz-option>
+                <nz-option nzValue="Văzut" nzLabel="Văzut (Film/Serial)"></nz-option>
+                <nz-option nzValue="Citit" nzLabel="Citit (Carte)"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <!-- Rating -->
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="rating">Apreciere (Rating)</nz-form-label>
+            <nz-form-control>
+              <div class="modal-rate-wrapper">
+                <nz-rate formControlName="rating" id="rating" class="modal-stars"></nz-rate>
+                <span class="rate-number-preview">({{ itemForm.get('rating')?.value }}/5)</span>
+              </div>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+      </form>
+    </ng-template>
+
+    <!-- Template pentru subsol (butoane) -->
+    <ng-template #modalFooterTemplate>
+      <div class="modal-footer-custom">
+        <button nz-button nzType="default" class="btn-secondary-custom" (click)="handleCancel()">
+          Renunță
+        </button>
+        <button nz-button nzType="primary" class="btn-primary-custom" (click)="handleSave()">
+          {{ isEditing ? 'Salvează Modificările' : 'Adaugă Elementul' }}
+        </button>
+      </div>
+    </ng-template>
+  </nz-modal>
+</div>

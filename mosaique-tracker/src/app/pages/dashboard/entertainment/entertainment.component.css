@@ -1,0 +1,696 @@
+/* Containerul principal */
+.entertainment-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Header-ul Paginii */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.breadcrumb-custom {
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--slate-gray);
+  margin-bottom: 4px;
+}
+
+.page-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--space-cadet);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.page-subtitle {
+  font-size: 0.95rem;
+  color: var(--slate-gray);
+  margin: 4px 0 0 0;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+}
+
+/* Butoane custom premium */
+.btn-primary-custom {
+  background: var(--space-cadet) !important;
+  border-color: var(--space-cadet) !important;
+  color: #ffffff !important;
+  height: 44px;
+  padding: 0 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 10px rgba(37, 52, 79, 0.15);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.btn-primary-custom:hover {
+  background: var(--tan) !important;
+  border-color: var(--tan) !important;
+  color: var(--space-cadet) !important;
+  box-shadow: 0 6px 15px rgba(213, 184, 147, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-primary-custom .btn-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Panel Statistici */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.stat-card {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.stat-card-inner {
+  padding: 22px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--slate-gray);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--space-cadet);
+  font-family: 'Playfair Display', serif;
+}
+
+.stat-value .max-rating {
+  font-size: 1rem;
+  color: var(--slate-gray);
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+}
+
+.stat-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-icon {
+  width: 22px;
+  height: 22px;
+}
+
+/* Indicatori de culori jos carduri */
+.card-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+}
+
+/* Culori carduri statistici */
+.card-total .stat-icon-wrapper {
+  background: rgba(37, 52, 79, 0.08);
+  color: var(--space-cadet);
+}
+.card-total .card-indicator {
+  background: var(--space-cadet);
+}
+
+.card-progress .stat-icon-wrapper {
+  background: rgba(97, 120, 145, 0.08);
+  color: var(--slate-gray);
+}
+.card-progress .card-indicator {
+  background: var(--slate-gray);
+}
+
+.card-completed .stat-icon-wrapper {
+  background: rgba(46, 117, 89, 0.08);
+  color: #2e7559;
+}
+.card-completed .card-indicator {
+  background: #2e7559;
+}
+
+.card-rating .stat-icon-wrapper {
+  background: rgba(213, 184, 147, 0.12);
+  color: #d69e2e;
+}
+.card-rating .card-indicator {
+  background: var(--tan);
+}
+.card-rating .icon-star {
+  width: 22px;
+  height: 22px;
+  color: #e6a23c;
+}
+
+/* Bara de Căutare și Filtrare */
+.filter-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 20px 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.search-box {
+  position: relative;
+  flex: 1;
+  min-width: 280px;
+  max-width: 500px;
+}
+
+.search-icon-wrapper {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--slate-gray);
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.search-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.search-input {
+  width: 100%;
+  height: 42px;
+  padding: 0 14px 0 42px;
+  border-radius: 10px;
+  border: 1px solid #dcdcdc;
+  font-size: 0.95rem;
+  color: var(--space-cadet);
+  transition: all 0.2s ease-in-out;
+  outline: none;
+  background-color: #fafbfc;
+}
+
+.search-input:focus {
+  border-color: var(--space-cadet);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(37, 52, 79, 0.06);
+}
+
+.filter-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.filter-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--space-cadet);
+}
+
+.status-select {
+  width: 180px;
+}
+
+.status-select ::ng-deep .ant-select-selector {
+  border-radius: 8px !important;
+  height: 42px !important;
+  padding: 5px 12px !important;
+  border-color: #dcdcdc !important;
+  background-color: #fafbfc !important;
+}
+
+.status-select ::ng-deep .ant-select-focused .ant-select-selector {
+  border-color: var(--space-cadet) !important;
+  box-shadow: 0 0 0 3px rgba(37, 52, 79, 0.06) !important;
+  background-color: #ffffff !important;
+}
+
+/* Tabelul cu date */
+.table-card {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.custom-table ::ng-deep .ant-table {
+  background: transparent !important;
+}
+
+.custom-table ::ng-deep thead > tr > th {
+  background: #fafbfc !important;
+  color: var(--space-cadet) !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  padding: 16px 20px !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+.custom-table ::ng-deep tbody > tr > td {
+  padding: 16px 20px !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
+}
+
+.table-row-hover:hover {
+  background-color: rgba(213, 184, 147, 0.03) !important;
+}
+
+/* Celulă Titlu + Creator */
+.title-creator-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.item-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--space-cadet);
+}
+
+.item-creator {
+  font-size: 0.85rem;
+  color: var(--slate-gray);
+  font-style: italic;
+}
+
+/* Genuri badge-uri stilate */
+.genre-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  background-color: #f1f3f5;
+  color: #495057;
+}
+
+/* Culori genuri populare */
+.genre-tag.sci-fi, .genre-tag.sf, .genre-tag.fantasy {
+  background-color: rgba(103, 58, 183, 0.08);
+  color: #673ab7;
+}
+
+.genre-tag.self-help, .genre-tag.dezvoltare {
+  background-color: rgba(46, 117, 89, 0.08);
+  color: #2e7559;
+}
+
+.genre-tag.dramă, .genre-tag.drama {
+  background-color: rgba(33, 150, 243, 0.08);
+  color: #2196f3;
+}
+
+.genre-tag.action, .genre-tag.acțiune {
+  background-color: rgba(244, 67, 54, 0.08);
+  color: #f44336;
+}
+
+.genre-tag.comedy, .genre-tag.comedie {
+  background-color: rgba(255, 152, 0, 0.08);
+  color: #ff9800;
+}
+
+.genre-tag.classic, .genre-tag.literatură, .genre-tag.clasic {
+  background-color: rgba(121, 85, 72, 0.08);
+  color: #795548;
+}
+
+/* Celulă Durată */
+.duration-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--slate-gray);
+  font-size: 0.95rem;
+}
+
+.duration-icon {
+  width: 16px;
+  height: 16px;
+  opacity: 0.8;
+}
+
+/* Stele Rating */
+.stars-display {
+  color: #e6a23c !important;
+  font-size: 15px;
+}
+
+/* Status Toggler */
+.status-pill-toggler {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid transparent;
+}
+
+.status-pill-toggler:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+}
+
+.status-pill-toggler:hover .cycle-icon {
+  transform: rotate(180deg);
+}
+
+.status-pill-toggler .pulse-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.status-pill-toggler .cycle-icon {
+  width: 12px;
+  height: 12px;
+  opacity: 0;
+  transition: transform 0.4s ease, opacity 0.2s ease;
+  margin-left: 2px;
+}
+
+.status-pill-toggler:hover .cycle-icon {
+  opacity: 0.8;
+}
+
+/* Specificitate status culori */
+.status-waiting {
+  background: #fff8eb;
+  color: #b78103;
+  border-color: #ffe8cc;
+}
+.status-waiting .pulse-indicator {
+  background: #e6a23c;
+  animation: pulse-amber 1.8s infinite;
+}
+
+.status-progress {
+  background: #ecf5ff;
+  color: #1890ff;
+  border-color: #d9ecff;
+}
+.status-progress .pulse-indicator {
+  background: #1890ff;
+  animation: pulse-blue 1.8s infinite;
+}
+
+.status-completed {
+  background: #f0f9eb;
+  color: #2e7559;
+  border-color: #dbf1d1;
+}
+.status-completed .pulse-indicator {
+  background: #2e7559;
+}
+
+/* Animații Pulse indicatori status */
+@keyframes pulse-amber {
+  0% {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 0 rgba(230, 162, 60, 0.6);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 6px rgba(230, 162, 60, 0);
+  }
+  100% {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 0 rgba(230, 162, 60, 0);
+  }
+}
+
+@keyframes pulse-blue {
+  0% {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 0 rgba(24, 144, 255, 0.6);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 6px rgba(24, 144, 255, 0);
+  }
+  100% {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 0 rgba(24, 144, 255, 0);
+  }
+}
+
+/* Celulă Acțiuni */
+.actions-cell {
+  white-space: nowrap;
+}
+
+.btn-action {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  color: var(--slate-gray);
+  margin-left: 6px;
+}
+
+.btn-action:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.edit-btn:hover {
+  color: var(--space-cadet) !important;
+  background-color: rgba(37, 52, 79, 0.06);
+}
+
+.delete-btn:hover {
+  color: #d32f2f !important;
+  background-color: rgba(211, 47, 47, 0.06);
+}
+
+.action-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.text-right {
+  text-align: right;
+}
+
+/* Modal Stilizare Premium */
+.custom-modal ::ng-deep .ant-modal-content {
+  border-radius: 16px !important;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12) !important;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.custom-modal ::ng-deep .ant-modal-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+  padding: 20px 24px !important;
+}
+
+.custom-modal ::ng-deep .ant-modal-body {
+  padding: 24px !important;
+}
+
+.custom-modal ::ng-deep .ant-modal-footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.06) !important;
+  padding: 16px 24px !important;
+  background: #fafbfc;
+}
+
+.modal-header-custom {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--space-cadet);
+  font-size: 1.25rem;
+  font-weight: 700;
+  font-family: 'Playfair Display', serif;
+}
+
+.modal-header-icon {
+  width: 22px;
+  height: 22px;
+  color: var(--tan);
+}
+
+.modal-form-custom {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-row-two-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 576px) {
+  .form-row-two-columns {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+.form-input-custom {
+  height: 40px !important;
+  border-radius: 8px !important;
+  border-color: #dcdcdc !important;
+}
+
+.form-input-custom:focus {
+  border-color: var(--space-cadet) !important;
+  box-shadow: 0 0 0 3px rgba(37, 52, 79, 0.06) !important;
+}
+
+.form-select-custom ::ng-deep .ant-select-selector {
+  border-radius: 8px !important;
+  height: 40px !important;
+  padding: 4px 12px !important;
+  border-color: #dcdcdc !important;
+}
+
+.form-select-custom ::ng-deep .ant-select-focused .ant-select-selector {
+  border-color: var(--space-cadet) !important;
+  box-shadow: 0 0 0 3px rgba(37, 52, 79, 0.06) !important;
+}
+
+/* Rating în Formular Modal */
+.modal-rate-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+}
+
+.modal-stars {
+  font-size: 20px;
+  color: #e6a23c !important;
+}
+
+.rate-number-preview {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--slate-gray);
+}
+
+/* Butoane Footer Modal */
+.modal-footer-custom {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.btn-secondary-custom {
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  border-color: #dcdcdc !important;
+  color: var(--slate-gray) !important;
+  transition: all 0.2s;
+}
+
+.btn-secondary-custom:hover {
+  border-color: var(--slate-gray) !important;
+  color: var(--space-cadet) !important;
+  background-color: #f1f3f5;
+}
+
+/* Adaptabilitate pentru telefoane */
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .header-actions {
+    width: 100%;
+  }
+  
+  .btn-primary-custom {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .filter-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .search-box {
+    max-width: 100%;
+  }
+  
+  .filter-actions {
+    justify-content: space-between;
+  }
+  
+  .status-select {
+    flex: 1;
+  }
+}

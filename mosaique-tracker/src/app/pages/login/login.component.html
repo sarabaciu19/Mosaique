@@ -1,1 +1,39 @@
-<p>login.component works!</p>
+<div class="auth-container">
+    <nz-card class="glass-panel auth-card">
+        <div class="logo-area">
+            <div class="logo-icon">M</div>
+            <h1>Mosaique</h1>
+            <p class="subtitle">Your personal tracker</p>
+        </div>
+        <form nz-form [formGroup]="loginForm" (ngSubmit)="submitForm()">
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Email is not valid!">
+                    <nz-input-group nzPrefixIcon="mail" nzSize="large">
+                        <input type="email" nz-input formControlName="email" placeholder="Email" />
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Password is required!">
+                    <nz-input-group nzPrefixIcon="lock" nzSize="large">
+                        <input type="password" nz-input formControlName="password" placeholder="Password" />
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+
+            <div class="remember-row">
+                <label nz-checkbox formControlName="rememberMe">Remember me</label>
+            </div>
+
+            <button nz-button nzType="primary" nzSize="large" nzBlock [nzLoading]="loading" class="submit-btn">
+                Login
+            </button>
+
+            <div class="register-link">
+                Don't have an account? <a routerLink="/register">Register here!</a>
+            </div>
+
+        </form>
+    </nz-card>
+</div>

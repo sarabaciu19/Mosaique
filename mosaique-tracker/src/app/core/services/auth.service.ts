@@ -1,5 +1,8 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 export interface User {
     email: string;
@@ -10,8 +13,8 @@ export interface User {
 
 export interface LoggedUser {
     email: string;
-    firstName: string;
-    lastName: string;
+    firstName?: string;
+    lastName?: string;
 }
 
 const USERS_KEY = 'mosaique_users';
@@ -21,11 +24,12 @@ const SESSION_KEY = 'mosaique_session';
     providedIn: 'root'
 })
 export class AuthService {
+    private http = inject(HttpClient);
+    private router = inject(Router);
+
     private currentUser = signal<LoggedUser | null>(null); // signal pentru a stoca utilizatorul curent
 
-    constructor(private router: Router) {
-        this.seedDemoUser();
-
+    constructor() {
         const saved = localStorage.getItem(SESSION_KEY);
         if (saved) {
             this.currentUser.set(JSON.parse(saved));
@@ -41,62 +45,35 @@ export class AuthService {
         localStorage.setItem(USERS_KEY, JSON.stringify(users));
     }
 
-    private seedDemoUser(): void {
-        const users = this.getUsers();
-        const demo = users.find(u => u.email === 'demo@mosaique.ro');
-
-        if (!demo) {
-            users.push({
-                email: 'demo@mosaique.ro',
-                firstName: 'Demo',
-                lastName: 'User',
-                password: 'demo'
-            });
-            this.saveUsers(users);
-        }
-    }
-
     // API
-    login(credentials: { email: string; password: string; rememberMe: boolean }): { success: boolean; error?: string } {
-        const users = this.getUsers();
-        const found = users.find(u => u.email === credentials.email
-            && u.password === credentials.password);
-
-        if (!found) {
-            return { success: false, error: 'Invalid email or password' };
-        }
-        const session: LoggedUser = {
-            email: found.email,
-            firstName: found.firstName,
-            lastName: found.lastName
-        };
-
-        this.currentUser.set(session);
-
-        if (credentials.rememberMe) {
-            localStorage.setItem(SESSION_KEY, JSON.stringify(session));
-        }
-
-        return { success: true };
+    login(credentials: { email: string; password: string; rememberMe: boolean }): Observable<any> {
+        return this.http.post<{ token: string }>('https://reqres.in/api/login',
+            {
+                email: credentials.email,
+                password: credentials.password
+            }
+        ).pipe(
+            tap(response => {
+                const session: LoggedUser = {
+                    email: credentials.email,
+                    firstName: 'User',
+                    lastName: 'Test'
+                };
+                this.currentUser.set(session);
+                if (credentials.rememberMe) {
+                    localStorage.setItem('mosaique_session', JSON.stringify(session));
+                }
+            })
+        );
     }
 
-    register(data: { email: string; firstName: string; lastName: string; password: string }): { success: boolean; error?: string } {
-        const users = this.getUsers();
-        const exists = users.find(u => u.email === data.email);
-
-        if (exists) {
-            return { success: false, error: 'User with this email already exists' };
-        }
-
-        users.push({
-            email: data.email,
-            firstName: data.firstName,
-            lastName: data.lastName,
-            password: data.password
-        });
-
-        this.saveUsers(users);
-        return { success: true };
+    register(data: { email: string; firstName: string; lastName: string; password: string }): Observable<any> {
+        return this.http.post<{ id: number; token?: string }>('https://reqres.in/api/register',
+            {
+                email: data.email,
+                password: data.password
+            }
+        );
     }
 
     logout(): void {

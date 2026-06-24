@@ -1,11 +1,11 @@
 import { Component, inject, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import confetti from 'canvas-confetti';
 import {
   FormsModule, ReactiveFormsModule, FormBuilder, FormGroup,
   Validators, AbstractControl, ValidatorFn
 } from '@angular/forms';
 import { DataService, Management } from '../../../core/services/data.service';
-import { StatusIndicatorComponent } from '../../../shared/components/status-indicator/status-indicator.component';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -34,7 +34,6 @@ export function futureDateValidator(): ValidatorFn {
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    StatusIndicatorComponent,
     NzTableModule,
     NzButtonModule,
     NzIconModule,
@@ -113,10 +112,18 @@ export class ManagementComponent {
 
   handleOk(): void {
     if (this.form.valid) {
+      const taskVal = this.form.value;
       if (this.isEditing && this.editingId) {
-        this.dataService.update<Management>(this.list, this.editingId, this.form.value);
+        this.dataService.update<Management>(this.list, this.editingId, taskVal);
       } else {
-        this.dataService.add<Management>(this.list, this.form.value);
+        this.dataService.add<Management>(this.list, taskVal);
+      }
+      if (taskVal.status === 'Done') {
+        confetti({
+          particleCount: 150,
+          spread: 80,
+          origin: { y: 0.6 }
+        });
       }
       this.isVisible = false;
     } else {
@@ -133,5 +140,12 @@ export class ManagementComponent {
 
   onStatusChange(data: Management, newStatus: string): void {
     this.dataService.update<Management>(this.list, data.id, { status: newStatus as any });
+    if (newStatus === 'Done') {
+      confetti({
+        particleCount: 150,
+        spread: 80,
+        origin: { y: 0.6 }
+      });
+    }
   }
 }

@@ -129,3 +129,33 @@
 :host ::ng-deep .ant-table-tbody>tr:hover>td {
     background: rgba(213, 184, 147, 0.05) !important;
 }
+
+.status-select {
+    width: 140px;
+    
+    ::ng-deep {
+        .ant-select-selector {
+            border-radius: 8px !important;
+            font-weight: 600 !important;
+            transition: all 0.3s ease;
+        }
+    }
+    
+    &.status-to-do ::ng-deep .ant-select-selector {
+        background: rgba(113, 128, 150, 0.08) !important;
+        border-color: rgba(113, 128, 150, 0.2) !important;
+        color: #718096 !important;
+    }
+    
+    &.status-in-progress ::ng-deep .ant-select-selector {
+        background: rgba(221, 107, 32, 0.08) !important;
+        border-color: rgba(221, 107, 32, 0.2) !important;
+        color: #dd6b20 !important;
+    }
+    
+    &.status-done ::ng-deep .ant-select-selector {
+        background: rgba(56, 161, 105, 0.08) !important;
+        border-color: rgba(56, 161, 105, 0.2) !important;
+        color: #38a169 !important;
+    }
+}

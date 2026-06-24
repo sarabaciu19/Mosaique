@@ -1,0 +1,122 @@
+<div class="page-panel">
+    <!-- Header -->
+    <div class="page-header">
+        <div class="page-title">
+            <h2>Personal Management</h2>
+            <nz-tag nzColor="purple">Tasks</nz-tag>
+        </div>
+        <div class="page-actions">
+            <nz-input-group [nzSuffix]="suffixIconSearch" class="search-input">
+                <input type="text" nz-input placeholder="Search task, responsible..." [(ngModel)]="searchTerm"
+                    (ngModelChange)="onSearch()" />
+            </nz-input-group>
+            <ng-template #suffixIconSearch>
+                <span nz-icon nzType="search"></span>
+            </ng-template>
+            <button nz-button nzType="primary" (click)="showModal()">
+                <span nz-icon nzType="plus"></span> Add
+            </button>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <nz-table #basicTable [nzData]="filteredList()" [nzPageSize]="8" nzSize="middle">
+        <thead>
+            <tr>
+                <th nzColumnKey="description" [nzSortFn]="sortDesc">Task Description</th>
+                <th nzColumnKey="priority" [nzSortFn]="sortPriority">Priority</th>
+                <th nzColumnKey="deadline" [nzSortFn]="sortDeadline">Due Date</th>
+                <th nzColumnKey="responsible" [nzSortFn]="sortResponsible">Responsible</th>
+                <th nzColumnKey="status">Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of basicTable.data">
+                <td><strong>{{ item.description }}</strong></td>
+                <td>
+                    <nz-tag
+                        [nzColor]="item.priority === 'High' ? 'red' : (item.priority === 'Medium' ? 'orange' : 'green')">
+                        {{ item.priority }}
+                    </nz-tag>
+                </td>
+                <td [class.overdue]="isOverdue(item.deadline)">
+                    {{ item.deadline | date:'dd MMM yyyy' }}
+                    <span *ngIf="isOverdue(item.deadline)" class="overdue-badge">Overdue</span>
+                </td>
+                <td>{{ item.responsible }}</td>
+                <td class="status-cell">
+                    <app-status-indicator [status]="item.status"
+                        (statusChange)="onStatusChange(item, $event)"></app-status-indicator>
+                    <span class="status-label">{{ item.status }}</span>
+                </td>
+                <td>
+                    <div class="action-btns">
+                        <button nz-button nzType="default" nzSize="small" (click)="edit(item)">
+                            <span nz-icon nzType="edit"></span>
+                        </button>
+                        <button nz-button nzType="default" nzSize="small" nzDanger (click)="delete(item.id)">
+                            <span nz-icon nzType="delete"></span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</div>
+
+<!-- Add / Edit Modal -->
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="isEditing ? 'Edit Task' : 'Add Task'" (nzOnCancel)="handleCancel()"
+    (nzOnOk)="handleOk()" nzOkText="Save">
+
+    <ng-container *nzModalContent>
+        <form nz-form [formGroup]="form" nzLayout="vertical">
+            <nz-form-item>
+                <nz-form-label nzRequired>Task Description</nz-form-label>
+                <nz-form-control nzErrorTip="This field is required!">
+                    <input nz-input formControlName="description" placeholder="What needs to be done?" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <div class="form-row">
+                <nz-form-item class="flex-item">
+                    <nz-form-label nzRequired>Priority</nz-form-label>
+                    <nz-form-control>
+                        <nz-select formControlName="priority">
+                            <nz-option nzValue="Low" nzLabel="Low"></nz-option>
+                            <nz-option nzValue="Medium" nzLabel="Medium"></nz-option>
+                            <nz-option nzValue="High" nzLabel="High"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item class="flex-item">
+                    <nz-form-label nzRequired>Status</nz-form-label>
+                    <nz-form-control>
+                        <nz-select formControlName="status">
+                            <nz-option nzValue="To Do" nzLabel="To Do"></nz-option>
+                            <nz-option nzValue="In Progress" nzLabel="In Progress"></nz-option>
+                            <nz-option nzValue="Done" nzLabel="Done"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div class="form-row">
+                <nz-form-item class="flex-item">
+                    <nz-form-label nzRequired>Due Date</nz-form-label>
+                    <nz-form-control nzErrorTip="Date can not be in the past!">
+                        <nz-date-picker formControlName="deadline" style="width: 100%"></nz-date-picker>
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item class="flex-item">
+                    <nz-form-label nzRequired>Responsibility</nz-form-label>
+                    <nz-form-control nzErrorTip="This field is required!">
+                        <input nz-input formControlName="responsible" placeholder="Who?" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </form>
+    </ng-container>
+</nz-modal>

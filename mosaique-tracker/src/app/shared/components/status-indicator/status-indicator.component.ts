@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-status-indicator.component',
+  selector: 'app-status-indicator',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './status-indicator.component.html',
@@ -22,16 +22,16 @@ export class StatusIndicatorComponent {
 
   toggleStatus(): void {
     let nextStatus = this.status;
-    if (this.status === 'TO DO')
-      nextStatus = 'IN PROGRESS';
-    else if (this.status === 'IN PROGRESS')
-      nextStatus = 'DONE';
-    else if (this.status === 'DONE')
-      nextStatus = 'TO DO';
-    else if (this.status === 'PENDING')
-      nextStatus = 'SEEN';
-    else if (this.status === 'SEEN')
-      nextStatus = 'PENDING';
+    if (this.status === 'To Do')
+      nextStatus = 'In Progress';
+    else if (this.status === 'In Progress')
+      nextStatus = 'Done';
+    else if (this.status === 'Done')
+      nextStatus = 'To Do';
+    else if (this.status === 'Pending')
+      nextStatus = 'Seen';
+    else if (this.status === 'Seen')
+      nextStatus = 'Pending';
 
     if (nextStatus !== this.status) {
       this.statusChange.emit(nextStatus);

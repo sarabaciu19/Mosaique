@@ -54,7 +54,7 @@ export class LoginComponent {
       },
       error: (error) => {
         this.loading = false;
-        let errMsg = 'Email sau parolă incorectă.';
+        let errMsg = 'Invalid email or password.';
         if (error?.error?.message) {
           errMsg = error.error.message;
         } else if (error?.error?.error) {

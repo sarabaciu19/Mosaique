@@ -1,0 +1,9 @@
+<div class="stars-container" [class.interactive]="interactive">
+  <span 
+    *ngFor="let star of stars" 
+    class="star-icon" 
+    [class.filled]="star <= rating"
+    (click)="rate(star)">
+    ★
+  </span>
+</div>

@@ -1,0 +1,27 @@
+.stars-container {
+  display: inline-flex;
+  gap: 4px;
+  
+  .star-icon {
+    font-size: 20px;
+    color: #e2e8f0; /* light gray star */
+    transition: all 0.2s ease;
+    user-select: none;
+    
+    &.filled {
+      color: #D5B893; /* brand tan/gold star */
+      text-shadow: 0 0 4px rgba(213, 184, 147, 0.4);
+    }
+  }
+  
+  &.interactive {
+    .star-icon {
+      cursor: pointer;
+      
+      &:hover {
+        transform: scale(1.2);
+        color: #c2a176;
+      }
+    }
+  }
+}

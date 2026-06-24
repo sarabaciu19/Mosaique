@@ -1,1 +1,68 @@
-<p>register.component works!</p>
+<div class="auth-container">
+    <nz-card class="glass-panel auth-card">
+        <div class="logo-area">
+            <div class="logo-icon">M</div>
+            <h1>Mosaique</h1>
+            <p class="subtitle">Create your account</p>
+        </div>
+
+        <form nz-form [formGroup]="registerForm" (ngSubmit)="submitForm()">
+            <div class="name-row">
+                <nz-form-item class="half-item">
+                    <nz-form-control nzErrorTip="Required!">
+                        <nz-input-group nzPrefixIcon="user" nzSize="large">
+                            <input nz-input formControlName="firstName" placeholder="First Name" />
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item class="half-item">
+                    <nz-form-control nzErrorTip="Required!">
+                        <nz-input-group nzPrefixIcon="user" nzSize="large">
+                            <input nz-input formControlName="lastName" placeholder="Last Name" />
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Please input a valid email!">
+                    <nz-input-group nzPrefixIcon="mail" nzSize="large">
+                        <input type="email" nz-input formControlName="email" placeholder="Email" />
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-control [nzErrorTip]="passwordErrorTpl">
+                    <nz-input-group nzPrefixIcon="lock" nzSize="large">
+                        <input type="password" nz-input formControlName="password" placeholder="Password" />
+                    </nz-input-group>
+                    <ng-template #passwordErrorTpl let-control>
+                        @if (control.hasError('required')) { Required! }
+                        @if (control.hasError('passwordStrength')) {
+                        Min 6 chars, uppercase, lowercase, digit & special char.
+                        }
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Passwords do not match!">
+                    <nz-input-group nzPrefixIcon="lock" nzSize="large">
+                        <input type="password" nz-input formControlName="confirmPassword"
+                            placeholder="Confirm Password" />
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+
+            <button nz-button nzType="primary" nzSize="large" nzBlock [nzLoading]="loading" class="submit-btn">
+                Create Account
+            </button>
+
+            <div class="login-link">
+                Already have an account? <a routerLink="/login">Log in!</a>
+            </div>
+        </form>
+    </nz-card>
+</div>

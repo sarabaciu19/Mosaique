@@ -4,21 +4,21 @@ import { Injectable, signal, computed, WritableSignal } from '@angular/core';
 export interface Entertainment {
   id: string;
   title: string;
-  author: string; // Autor sau Regizor
+  author: string; // Author or Director
   genre: string;
-  duration: number; // Durată în minute (filme) sau pagini (cărți)
-  status: 'Văzut' | 'Citit' | 'În așteptare' | 'În curs';
-  rating: number; // Rating de la 1 la 5 stele
+  duration: number; // Duration in minutes (movies) or pages (books)
+  status: 'Watched' | 'Read' | 'On Hold' | 'In Progress';
+  rating: number; // Rating from 1 to 5 stars
 }
 
 // Interfață pentru tracker-ul de Fitness (antrenamente)
 export interface Fitness {
   id: string;
-  name: string; // Denumire exercițiu
+  name: string; // Exercise name
   muscleGroup: 'Legs' | 'Chest' | 'Back' | 'Arms' | 'Core' | 'Cardio' | 'Full Body';
-  duration: number; // Durată în minute
-  calories: number; // Calorii arse
-  date: string; // Data antrenamentului
+  duration: number; // Duration in minutes
+  calories: number; // Calories burned
+  date: string; // Workout date
 }
 
 // Interfață pentru tracker-ul de Management (Task-uri)
@@ -55,7 +55,7 @@ export class DataService {
       author: 'Christopher Nolan',
       genre: 'Sci-Fi',
       duration: 148,
-      status: 'Văzut',
+      status: 'Watched',
       rating: 5
     },
     {
@@ -64,7 +64,7 @@ export class DataService {
       author: 'James Clear',
       genre: 'Self-Help',
       duration: 320,
-      status: 'Citit',
+      status: 'Read',
       rating: 5
     },
     {
@@ -73,7 +73,7 @@ export class DataService {
       author: 'Denis Villeneuve',
       genre: 'Sci-Fi',
       duration: 166,
-      status: 'În curs',
+      status: 'In Progress',
       rating: 4
     }
   ]);
@@ -81,7 +81,7 @@ export class DataService {
   public fitnessList = signal<Fitness[]>([
     {
       id: 'fit-1',
-      name: 'Alergare Ușoară',
+      name: 'Light Jogging',
       muscleGroup: 'Cardio',
       duration: 35,
       calories: 340,
@@ -89,7 +89,7 @@ export class DataService {
     },
     {
       id: 'fit-2',
-      name: 'Împins de la piept',
+      name: 'Bench Press',
       muscleGroup: 'Chest',
       duration: 45,
       calories: 280,
@@ -100,10 +100,10 @@ export class DataService {
   public managementList = signal<Management[]>([
     {
       id: 'task-1',
-      description: 'Finisare Proiect Angular standalone',
+      description: 'Finish standalone Angular project',
       priority: 'High',
       deadline: '2026-06-25',
-      responsible: 'Echipa Mosaique',
+      responsible: 'Mosaique Team',
       status: 'In Progress'
     }
   ]);
@@ -115,7 +115,7 @@ export class DataService {
       country: 'Italy',
       date: '2026-09-12',
       budget: 1200,
-      mainObjective: 'Vizitare Colosseum și Vatican'
+      mainObjective: 'Visit Colosseum and Vatican'
     }
   ]);
 

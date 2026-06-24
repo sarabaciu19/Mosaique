@@ -46,8 +46,8 @@ export class EntertainmentComponent {
 
   // Semnale derivate pentru statistici
   public totalCount = computed(() => this.dataService.entertainmentList().length);
-  public inProgressCount = computed(() => this.dataService.entertainmentList().filter(i => i.status === 'În curs').length);
-  public completedCount = computed(() => this.dataService.entertainmentList().filter(i => i.status === 'Văzut' || i.status === 'Citit').length);
+  public inProgressCount = computed(() => this.dataService.entertainmentList().filter(i => i.status === 'In Progress').length);
+  public completedCount = computed(() => this.dataService.entertainmentList().filter(i => i.status === 'Watched' || i.status === 'Read').length);
   public averageRating = computed(() => {
     const list = this.dataService.entertainmentList();
     if (list.length === 0) return '0.0';
@@ -66,7 +66,7 @@ export class EntertainmentComponent {
         item.title.toLowerCase().includes(query) ||
         item.author.toLowerCase().includes(query) ||
         item.genre.toLowerCase().includes(query);
-      
+
       const matchesStatus = !status || item.status === status;
       return matchesSearch && matchesStatus;
     });
@@ -91,7 +91,7 @@ export class EntertainmentComponent {
       author: ['', [Validators.required, Validators.minLength(2)]],
       genre: ['', [Validators.required]],
       duration: [null, [Validators.required, Validators.min(1)]],
-      status: ['În așteptare', [Validators.required]],
+      status: ['On Hold', [Validators.required]],
       rating: [3, [Validators.required, Validators.min(1), Validators.max(5)]]
     });
   }
@@ -108,20 +108,19 @@ export class EntertainmentComponent {
 
   // Modificare rapidă a statusului din tabel (status toggler)
   public toggleStatus(item: Entertainment): void {
-    const statusCycle: ('În așteptare' | 'În curs' | 'Văzut' | 'Citit')[] = [
-      'În așteptare',
-      'În curs',
-      'Văzut'
+    const statusCycle: ('On Hold' | 'In Progress' | 'Watched' | 'Read')[] = [
+      'On Hold',
+      'In Progress',
+      'Watched'
     ];
-    
-    // Determinăm următorul status în ciclu
+
+    // Determine next status in cycle
     const currentIndex = statusCycle.indexOf(item.status as any);
     let nextIndex = (currentIndex + 1) % statusCycle.length;
-    
-    // Dacă este carte, putem folosi și statusul 'Citit' în loc de 'Văzut'
+
     let nextStatus = statusCycle[nextIndex];
-    if (nextStatus === 'Văzut' && (item.genre.toLowerCase().includes('carte') || item.genre.toLowerCase().includes('book') || item.genre.toLowerCase().includes('novel') || item.genre.toLowerCase().includes('classic') || item.genre.toLowerCase().includes('literatură'))) {
-      nextStatus = 'Citit';
+    if (nextStatus === 'Watched' && (item.genre.toLowerCase().includes('carte') || item.genre.toLowerCase().includes('book') || item.genre.toLowerCase().includes('novel') || item.genre.toLowerCase().includes('classic') || item.genre.toLowerCase().includes('literatură'))) {
+      nextStatus = 'Read';
     }
 
     this.dataService.update<Entertainment>(
@@ -129,7 +128,7 @@ export class EntertainmentComponent {
       item.id,
       { status: nextStatus as any }
     );
-    this.message.info(`Status actualizat la "${nextStatus}" pentru ${item.title}`);
+    this.message.info(`Status updated to "${nextStatus}" for ${item.title}`);
   }
 
   // Deschiderea modalului de adăugare
@@ -141,7 +140,7 @@ export class EntertainmentComponent {
       author: '',
       genre: '',
       duration: null,
-      status: 'În așteptare',
+      status: 'On Hold',
       rating: 3
     });
     this.isModalVisible = true;
@@ -180,13 +179,13 @@ export class EntertainmentComponent {
         this.editingId,
         formValue
       );
-      this.message.success('Elementul a fost actualizat!');
+      this.message.success('Item updated successfully!');
     } else {
       this.dataService.add<Entertainment>(
         this.dataService.entertainmentList,
         formValue
       );
-      this.message.success('Elementul a fost adăugat!');
+      this.message.success('Item added successfully!');
     }
 
     this.isModalVisible = false;
@@ -196,9 +195,9 @@ export class EntertainmentComponent {
     this.isModalVisible = false;
   }
 
-  // Ștergere
+  // Delete
   public deleteItem(id: string): void {
     this.dataService.delete<Entertainment>(this.dataService.entertainmentList, id);
-    this.message.success('Elementul a fost șters!');
+    this.message.success('Item deleted successfully!');
   }
 }

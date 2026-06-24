@@ -67,7 +67,7 @@ export class FitnessComponent {
   public favoriteMuscleGroup = computed(() => {
     const list = this.dataService.fitnessList();
     if (list.length === 0) return 'N/A';
-    
+
     const counts: Record<string, number> = {};
     list.forEach((workout) => {
       counts[workout.muscleGroup] = (counts[workout.muscleGroup] || 0) + 1;
@@ -75,14 +75,14 @@ export class FitnessComponent {
 
     let favorite = 'N/A';
     let maxCount = 0;
-    
+
     for (const group in counts) {
       if (counts[group] > maxCount) {
         maxCount = counts[group];
         favorite = group;
       }
     }
-    
+
     return favorite;
   });
 
@@ -137,10 +137,10 @@ export class FitnessComponent {
   public openEditModal(item: Fitness): void {
     this.isEditing = true;
     this.editingId = item.id;
-    
+
     // Convertim data string la obiect Date pentru DatePicker
     const dateObj = item.date ? new Date(item.date) : new Date();
-    
+
     this.itemForm.patchValue({
       name: item.name,
       muscleGroup: item.muscleGroup,
@@ -162,7 +162,7 @@ export class FitnessComponent {
     }
 
     const formValue = this.itemForm.value;
-    
+
     // Formatăm obiectul Date într-un string YYYY-MM-DD
     let dateStr = '';
     if (formValue.date instanceof Date) {
@@ -188,13 +188,13 @@ export class FitnessComponent {
         this.editingId,
         payload
       );
-      this.message.success('Antrenamentul a fost actualizat!');
+      this.message.success('Workout updated successfully!');
     } else {
       this.dataService.add<Fitness>(
         this.dataService.fitnessList,
         payload
       );
-      this.message.success('Antrenamentul a fost adăugat!');
+      this.message.success('Workout added successfully!');
     }
 
     this.isModalVisible = false;
@@ -204,9 +204,8 @@ export class FitnessComponent {
     this.isModalVisible = false;
   }
 
-  // Ștergere antrenament
   public deleteItem(id: string): void {
     this.dataService.delete<Fitness>(this.dataService.fitnessList, id);
-    this.message.success('Antrenamentul a fost șters!');
+    this.message.success('Workout deleted successfully!');
   }
 }

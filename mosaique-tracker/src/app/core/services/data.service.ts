@@ -27,7 +27,7 @@ export interface Management {
   description: string;
   priority: 'Low' | 'Medium' | 'High';
   deadline: string;
-  responsible: string;
+  category: 'Work' | 'University' | 'Personal' | 'Shopping' | 'Other';
   status: 'To Do' | 'In Progress' | 'Done';
 }
 
@@ -75,6 +75,42 @@ export class DataService {
       duration: 166,
       status: 'In Progress',
       rating: 4
+    },
+    {
+      id: 'ent-4',
+      title: 'The Matrix',
+      author: 'Lana & Lilly Wachowski',
+      genre: 'Sci-Fi',
+      duration: 136,
+      status: 'Watched',
+      rating: 5
+    },
+    {
+      id: 'ent-5',
+      title: 'To Kill a Mockingbird',
+      author: 'Harper Lee',
+      genre: 'Novel',
+      duration: 281,
+      status: 'On Hold',
+      rating: 4
+    },
+    {
+      id: 'ent-6',
+      title: 'Interstellar',
+      author: 'Christopher Nolan',
+      genre: 'Sci-Fi',
+      duration: 169,
+      status: 'Watched',
+      rating: 5
+    },
+    {
+      id: 'ent-7',
+      title: 'The Great Gatsby',
+      author: 'F. Scott Fitzgerald',
+      genre: 'Novel',
+      duration: 180,
+      status: 'Read',
+      rating: 4
     }
   ]);
 
@@ -94,17 +130,81 @@ export class DataService {
       duration: 45,
       calories: 280,
       date: '2026-06-22'
+    },
+    {
+      id: 'fit-3',
+      name: 'Squats & Lunges',
+      muscleGroup: 'Legs',
+      duration: 30,
+      calories: 220,
+      date: '2026-06-23'
+    },
+    {
+      id: 'fit-4',
+      name: 'Plank & Crunches',
+      muscleGroup: 'Core',
+      duration: 15,
+      calories: 100,
+      date: '2026-06-24'
+    },
+    {
+      id: 'fit-5',
+      name: 'Deadlifts',
+      muscleGroup: 'Back',
+      duration: 40,
+      calories: 310,
+      date: '2026-06-24'
+    },
+    {
+      id: 'fit-6',
+      name: 'Bicep Curls',
+      muscleGroup: 'Arms',
+      duration: 25,
+      calories: 150,
+      date: '2026-06-25'
     }
   ]);
 
   public managementList = signal<Management[]>([
     {
       id: 'task-1',
-      description: 'Finish standalone Angular project',
+      description: 'Buy groceries for the week',
+      priority: 'Medium',
+      deadline: '2026-06-25',
+      category: 'Shopping',
+      status: 'To Do'
+    },
+    {
+      id: 'task-2',
+      description: 'Call dentist for annual checkup',
+      priority: 'Low',
+      deadline: '2026-06-24',
+      category: 'Personal',
+      status: 'Done'
+    },
+    {
+      id: 'task-3',
+      description: 'Study for the mid-term exam',
       priority: 'High',
       deadline: '2026-06-25',
-      responsible: 'Mosaique Team',
+      category: 'University',
       status: 'In Progress'
+    },
+    {
+      id: 'task-4',
+      description: 'Submit monthly project report',
+      priority: 'High',
+      deadline: '2026-06-26',
+      category: 'Work',
+      status: 'In Progress'
+    },
+    {
+      id: 'task-5',
+      description: 'Clean the living room and balcony',
+      priority: 'Low',
+      deadline: '2026-06-28',
+      category: 'Personal',
+      status: 'To Do'
     }
   ]);
 
@@ -116,6 +216,38 @@ export class DataService {
       date: '2026-09-12',
       budget: 1200,
       mainObjective: 'Visit Colosseum and Vatican'
+    },
+    {
+      id: 'trv-2',
+      city: 'Paris',
+      country: 'France',
+      date: '2026-10-05',
+      budget: 1500,
+      mainObjective: 'Visit Eiffel Tower and Louvre'
+    },
+    {
+      id: 'trv-3',
+      city: 'Barcelona',
+      country: 'Spain',
+      date: '2026-07-20',
+      budget: 900,
+      mainObjective: 'Visit Sagrada Familia and beach'
+    },
+    {
+      id: 'trv-4',
+      city: 'Tokyo',
+      country: 'Japan',
+      date: '2026-11-10',
+      budget: 2500,
+      mainObjective: 'Explore Shibuya and Kyoto temples'
+    },
+    {
+      id: 'trv-5',
+      city: 'London',
+      country: 'United Kingdom',
+      date: '2026-08-05',
+      budget: 1400,
+      mainObjective: 'Visit British Museum and London Eye'
     }
   ]);
 

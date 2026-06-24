@@ -171,7 +171,7 @@
 
           <!-- Rating -->
           <td>
-            <nz-rate [ngModel]="item.rating" nzDisabled class="stars-display"></nz-rate>
+            <app-rating-stars [rating]="item.rating"></app-rating-stars>
           </td>
 
           <!-- Status Toggler -->
@@ -291,7 +291,11 @@
             <nz-form-label nzRequired nzFor="rating">Rating</nz-form-label>
             <nz-form-control>
               <div class="modal-rate-wrapper">
-                <nz-rate formControlName="rating" id="rating" class="modal-stars"></nz-rate>
+                <app-rating-stars 
+                  [rating]="itemForm.get('rating')?.value || 0" 
+                  [interactive]="true"
+                  (ratingChange)="itemForm.get('rating')?.setValue($event)">
+                </app-rating-stars>
                 <span class="rate-number-preview">({{ itemForm.get('rating')?.value }}/5)</span>
               </div>
             </nz-form-control>

@@ -12,7 +12,7 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzCardModule } from 'ng-zorro-antd/card';import { RatingStarsComponent } from '../../../shared/components/rating-stars/rating-stars.component';
 
 @Component({
   selector: 'app-entertainment',
@@ -30,7 +30,8 @@ import { NzCardModule } from 'ng-zorro-antd/card';
     NzRateModule,
     NzTagModule,
     NzPopconfirmModule,
-    NzCardModule
+    NzCardModule,
+    RatingStarsComponent
   ],
   templateUrl: './entertainment.component.html',
   styleUrl: './entertainment.component.css'

@@ -7,7 +7,7 @@
         </div>
         <div class="page-actions">
             <nz-input-group [nzSuffix]="suffixIconSearch" class="search-input">
-                <input type="text" nz-input placeholder="Search task, responsible..." [(ngModel)]="searchTerm"
+                <input type="text" nz-input placeholder="Search task, category..." [(ngModel)]="searchTerm"
                     (ngModelChange)="onSearch()" />
             </nz-input-group>
             <ng-template #suffixIconSearch>
@@ -26,7 +26,7 @@
                 <th nzColumnKey="description" [nzSortFn]="sortDesc">Task Description</th>
                 <th nzColumnKey="priority" [nzSortFn]="sortPriority">Priority</th>
                 <th nzColumnKey="deadline" [nzSortFn]="sortDeadline">Due Date</th>
-                <th nzColumnKey="responsible" [nzSortFn]="sortResponsible">Responsible</th>
+                <th nzColumnKey="category" [nzSortFn]="sortCategory">Category</th>
                 <th nzColumnKey="status">Status</th>
                 <th>Actions</th>
             </tr>
@@ -44,7 +44,11 @@
                     {{ item.deadline | date:'dd MMM yyyy' }}
                     <span *ngIf="isOverdue(item.deadline)" class="overdue-badge">Overdue</span>
                 </td>
-                <td>{{ item.responsible }}</td>
+                <td>
+                    <nz-tag [nzColor]="item.category === 'Work' ? 'blue' : (item.category === 'University' ? 'purple' : (item.category === 'Personal' ? 'cyan' : (item.category === 'Shopping' ? 'orange' : 'default')))">
+                        {{ item.category }}
+                    </nz-tag>
+                </td>
                 <td class="status-cell">
                     <nz-select [ngModel]="item.status" (ngModelChange)="onStatusChange(item, $event)" nzSize="default" class="status-select" [class]="'status-' + item.status.replace(' ', '-').toLowerCase()">
                         <nz-option nzValue="To Do" nzLabel="To Do"></nz-option>
@@ -113,9 +117,15 @@
                 </nz-form-item>
 
                 <nz-form-item class="flex-item">
-                    <nz-form-label nzRequired>Responsibility</nz-form-label>
+                    <nz-form-label nzRequired>Category</nz-form-label>
                     <nz-form-control nzErrorTip="This field is required!">
-                        <input nz-input formControlName="responsible" placeholder="Who?" />
+                        <nz-select formControlName="category">
+                            <nz-option nzValue="Work" nzLabel="Work"></nz-option>
+                            <nz-option nzValue="University" nzLabel="University"></nz-option>
+                            <nz-option nzValue="Personal" nzLabel="Personal"></nz-option>
+                            <nz-option nzValue="Shopping" nzLabel="Shopping"></nz-option>
+                            <nz-option nzValue="Other" nzLabel="Other"></nz-option>
+                        </nz-select>
                     </nz-form-control>
                 </nz-form-item>
             </div>

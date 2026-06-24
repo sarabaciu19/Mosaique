@@ -61,7 +61,7 @@ export class ManagementComponent {
     if (!term) return this.list();
     return this.list().filter(item =>
       item.description.toLowerCase().includes(term) ||
-      item.responsible.toLowerCase().includes(term)
+      item.category.toLowerCase().includes(term)
     );
   });
 
@@ -73,14 +73,14 @@ export class ManagementComponent {
     description: ['', Validators.required],
     priority: ['Medium', Validators.required],
     deadline: [null, [Validators.required, futureDateValidator()]],
-    responsible: ['', Validators.required],
+    category: ['Personal', Validators.required],
     status: ['To Do', Validators.required]
   });
 
   sortDesc = (a: Management, b: Management) => a.description.localeCompare(b.description);
   sortPriority = (a: Management, b: Management) => a.priority.localeCompare(b.priority);
   sortDeadline = (a: Management, b: Management) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime();
-  sortResponsible = (a: Management, b: Management) => a.responsible.localeCompare(b.responsible);
+  sortCategory = (a: Management, b: Management) => a.category.localeCompare(b.category);
 
   isOverdue(deadline: string | Date): boolean {
     return new Date(deadline) < new Date();

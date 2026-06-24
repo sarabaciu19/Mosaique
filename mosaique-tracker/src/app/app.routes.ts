@@ -28,6 +28,14 @@ export const routes: Routes = [
         path: 'fitness',
         loadComponent: () => import('./pages/dashboard/fitness/fitness.component').then(m => m.FitnessComponent)
       },
+      {
+        path: 'management',
+        loadComponent: () => import('./pages/dashboard/management/management.component').then(m => m.ManagementComponent)
+      },
+      {
+        path: 'travel',
+        loadComponent: () => import('./pages/dashboard/travel/travel.component').then(m => m.TravelComponent)
+      },
       { path: '', redirectTo: 'entertainment', pathMatch: 'full' }
     ]
   },

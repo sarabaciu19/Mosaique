@@ -41,7 +41,7 @@
                     <ng-template #passwordErrorTpl let-control>
                         @if (control.hasError('required')) { Required! }
                         @if (control.hasError('passwordStrength')) {
-                        Min 6 chars, uppercase, lowercase, digit & special char.
+                        Min 6 chars, uppercase, lowercase & digit (letters & numbers only).
                         }
                     </ng-template>
                 </nz-form-control>

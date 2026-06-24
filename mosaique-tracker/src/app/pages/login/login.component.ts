@@ -9,6 +9,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'app-login.component',
@@ -16,11 +17,13 @@ import { NzCardModule } from 'ng-zorro-antd/card';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    RouterModule,
     NzFormModule,
     NzInputModule,
     NzButtonModule,
     NzCheckboxModule,
-    NzCardModule
+    NzCardModule,
+    NzIconModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -51,7 +54,12 @@ export class LoginComponent {
       },
       error: (error) => {
         this.loading = false;
-        const errMsg = error?.error?.error || 'Email sau parolă incorectă.';
+        let errMsg = 'Email sau parolă incorectă.';
+        if (error?.error?.message) {
+          errMsg = error.error.message;
+        } else if (error?.error?.error) {
+          errMsg = error.error.error;
+        }
         this.message.error(errMsg);
       }
     });

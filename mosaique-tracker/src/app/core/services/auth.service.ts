@@ -2,7 +2,7 @@ import { Injectable, signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, switchMap } from 'rxjs/operators';
 
 export interface User {
     email: string;
@@ -47,31 +47,43 @@ export class AuthService {
 
     // API
     login(credentials: { email: string; password: string; rememberMe: boolean }): Observable<any> {
-        return this.http.post<{ token: string }>('https://reqres.in/api/login',
+        return this.http.post<{ access_token: string }>('https://api.escuelajs.co/api/v1/auth/login',
             {
                 email: credentials.email,
                 password: credentials.password
             }
         ).pipe(
-            tap(response => {
-                const session: LoggedUser = {
-                    email: credentials.email,
-                    firstName: 'User',
-                    lastName: 'Test'
-                };
-                this.currentUser.set(session);
-                if (credentials.rememberMe) {
-                    localStorage.setItem('mosaique_session', JSON.stringify(session));
-                }
+            switchMap(response => {
+                // Fetch profile using token to get real user details
+                return this.http.get<any>('https://api.escuelajs.co/api/v1/auth/profile', {
+                    headers: {
+                        Authorization: `Bearer ${response.access_token}`
+                    }
+                }).pipe(
+                    tap(profile => {
+                        const nameParts = profile.name ? profile.name.split(' ') : ['User', 'Test'];
+                        const session: LoggedUser = {
+                            email: profile.email,
+                            firstName: nameParts[0] || 'User',
+                            lastName: nameParts.slice(1).join(' ') || 'Test'
+                        };
+                        this.currentUser.set(session);
+                        if (credentials.rememberMe) {
+                            localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+                        }
+                    })
+                );
             })
         );
     }
 
     register(data: { email: string; firstName: string; lastName: string; password: string }): Observable<any> {
-        return this.http.post<{ id: number; token?: string }>('https://reqres.in/api/register',
+        return this.http.post<{ id: number }>('https://api.escuelajs.co/api/v1/users/',
             {
+                name: `${data.firstName} ${data.lastName}`,
                 email: data.email,
-                password: data.password
+                password: data.password,
+                avatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=' + encodeURIComponent(data.firstName)
             }
         );
     }

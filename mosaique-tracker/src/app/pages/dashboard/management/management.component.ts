@@ -46,7 +46,7 @@ export function futureDateValidator(): ValidatorFn {
     NzTagModule
   ],
   templateUrl: './management.component.html',
-  styleUrl: './management.component.css'
+  styleUrl: './management.component.scss'
 })
 export class ManagementComponent {
   private dataService = inject(DataService);

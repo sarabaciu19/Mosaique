@@ -11,6 +11,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 export function passwordValidator(): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
@@ -19,8 +20,8 @@ export function passwordValidator(): ValidatorFn {
     const hasUpperCase = /[A-Z]/.test(value);
     const hasLowerCase = /[a-z]/.test(value);
     const hasNumeric = /[0-9]/.test(value);
-    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(value);
-    const isValid = hasUpperCase && hasLowerCase && hasNumeric && hasSpecial && value.length >= 6;
+    const onlyLettersAndNumbers = /^[A-Za-z0-9]+$/.test(value);
+    const isValid = hasUpperCase && hasLowerCase && hasNumeric && onlyLettersAndNumbers && value.length >= 6;
     return isValid ? null : { passwordStrength: true };
   };
 }
@@ -38,7 +39,16 @@ export function matchValidator(matchTo: string): ValidatorFn {
 @Component({
   selector: 'app-register.component',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NzFormModule, NzInputModule, NzButtonModule, NzCardModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    NzFormModule,
+    NzInputModule,
+    NzButtonModule,
+    NzCardModule,
+    NzIconModule
+  ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
@@ -70,7 +80,14 @@ export class RegisterComponent {
         },
         error: (error) => {
           this.loading = false;
-          const errMsg = error?.error?.error || 'Registration failed. Please try again.';
+          let errMsg = 'Registration failed. Please try again.';
+          if (error?.error?.message) {
+            errMsg = Array.isArray(error.error.message)
+              ? error.error.message.join(', ')
+              : error.error.message;
+          } else if (error?.error?.error) {
+            errMsg = error.error.error;
+          }
           this.message.error(errMsg);
         }
       });

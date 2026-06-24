@@ -27,7 +27,7 @@ export class AuthService {
     private http = inject(HttpClient);
     private router = inject(Router);
 
-    private currentUser = signal<LoggedUser | null>(null); // signal pentru a stoca utilizatorul curent
+    public currentUser = signal<LoggedUser | null>(null); // signal pentru a stoca utilizatorul curent
 
     constructor() {
         const saved = localStorage.getItem(SESSION_KEY);

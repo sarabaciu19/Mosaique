@@ -88,9 +88,9 @@
 
       <!-- Zona de profil din dreapta header-ului -->
       <div class="header-right">
-        <div class="user-profile">
-          <nz-avatar nzSize="default" nzText="M" class="user-avatar"></nz-avatar>
-          <span class="user-name">Echipa Mosaique</span>
+        <div class="user-profile" *ngIf="authService.currentUser() as user">
+          <nz-avatar nzSize="default" [nzText]="(user.firstName ? user.firstName.charAt(0) : 'U').toUpperCase()" class="user-avatar"></nz-avatar>
+          <span class="user-name">{{ user.firstName }} {{ user.lastName }}</span>
         </div>
         <button nz-button nzType="text" class="logout-btn" (click)="logout()">
           <svg class="logout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

@@ -1,0 +1,32 @@
+.status-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 11px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    vertical-align: middle;
+}
+
+.status-circle:hover {
+    transform: scale(1.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.status-done {
+    background-color: #25344F;
+}
+
+.status-inprogress {
+    background-color: #D5B893;
+}
+
+.status-todo {
+    background-color: #632024;
+}
